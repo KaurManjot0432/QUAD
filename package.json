@@ -1,0 +1,23 @@
+{
+  "name": "quad",
+  "version": "1.0.0",
+  "description": "Main function is to ingest the client responses of forms and then communicating back with client confirming successful ingestion.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaurManjot0432/QUAD.git"
+  },
+  "author": "Manjot Kaur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaurManjot0432/QUAD/issues"
+  },
+  "homepage": "https://github.com/KaurManjot0432/QUAD#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}
