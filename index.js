@@ -1,5 +1,5 @@
 const express = require('express');
-const connect = require('./app/models/quadDb');
+const {connect} = require('./app/models/quadDb');
 const router = require('./app/routes/index');
 
 connect();
