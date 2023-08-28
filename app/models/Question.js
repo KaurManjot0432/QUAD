@@ -10,7 +10,7 @@ const createQuestionTableQuery = `
     CREATE TABLE IF NOT EXISTS Question (
         question_id INT AUTO_INCREMENT PRIMARY KEY,
         question_type VARCHAR(255),
-        question_text VARCHAR(255) UNIQUE
+        question_text TEXT UNIQUE
     )
 `;
 

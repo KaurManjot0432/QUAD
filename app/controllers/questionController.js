@@ -1,7 +1,7 @@
 const Question = require("../models/Question");
 const FormQuestion = require("../models/FormQuestion");
 
-exports.create = (req, res) => {
+exports.save = (req, res) => {
   Question.createQuestionTable();
 
   // Validate request
