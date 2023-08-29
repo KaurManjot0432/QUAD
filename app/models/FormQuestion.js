@@ -1,42 +1,42 @@
-const { connection } = require('../models/quadDb');
+const connection = require('../models/quadDb');
 
-// constructor
-const FormQuestion = function (formQuestion) {
-  this.form_id = formQuestion.form_id;
-  this.question_id = formQuestion.question_id;
-};
+class FormQuestion {
+  constructor(formQuestion) {
+    this.form_id = formQuestion.form_id;
+    this.question_id = formQuestion.question_id;
+  }
 
-const createFormQuestionTableQuery = `
+  static createFormQuestionTableQuery = `
     CREATE TABLE IF NOT EXISTS FormQuestion (
-        form_question_id INT AUTO_INCREMENT PRIMARY KEY,
-        form_id INT,
-        question_id INT,
-        FOREIGN KEY (form_id) REFERENCES Form(form_id),
-        FOREIGN KEY (question_id) REFERENCES Question(question_id)
+      form_question_id INT AUTO_INCREMENT PRIMARY KEY,
+      form_id INT,
+      question_id INT,
+      FOREIGN KEY (form_id) REFERENCES Form(form_id),
+      FOREIGN KEY (question_id) REFERENCES Question(question_id)
     )
-`;
+  `;
 
-FormQuestion.createFormQuestionTable = () => {
-  connection.query(createFormQuestionTableQuery, (err) => {
-    if (err) {
+  static async createFormQuestionTable() {
+    try {
+      await connection.execute(this.createFormQuestionTableQuery);
+      console.log("created table FormQuestion");
+    } catch (err) {
       console.log("error: ", err);
-      result(err, null);
-      return;
+      throw err;
     }
-    console.log("created table FormQuestion");
-  })
+  }
+
+  static async insert(newFormQuestion) {
+    try {
+      const res = await connection.execute(
+        "INSERT INTO FormQuestion (form_id, question_id) VALUES (?, ?)",
+        [newFormQuestion.form_id, newFormQuestion.question_id]);
+      return { form_question_id: res[0].insertId, ...newFormQuestion };
+    } catch (err) {
+      console.log("error: ", err);
+      throw err;
+    }
+  }
 }
 
-FormQuestion.insert = (newFormQuestion, result) => {
-  console.log("inserting lkssksdf");
-  console.log(newFormQuestion.question_id);
-  connection.query("INSERT INTO FormQuestion SET ?", newFormQuestion, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
-    result(null, { form_question_id: res.insertId, ...newFormQuestion });
-  });
-}
 module.exports = FormQuestion;

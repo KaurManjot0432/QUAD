@@ -1,42 +1,42 @@
-const { connection } = require('../models/quadDb');
+const connection = require('../models/quadDb');
 
-// constructor
-const Form = function (form) {
-  this.owner_id = form.owner_id;
-  this.title = form.title;
-  this.description = form.description;
-};
+class Form {
+  constructor(form) {
+    this.owner_id = form.owner_id;
+    this.title = form.title;
+    this.description = form.description;
+  }
 
-const createFormTableQuery = `
-  CREATE TABLE IF NOT EXISTS Form (
-    form_id INT AUTO_INCREMENT PRIMARY KEY,
-    owner_id INT,
-    title VARCHAR(255),
-    description VARCHAR(1000),
-    FOREIGN KEY (owner_id) REFERENCES User(user_id)
-  )
-`;
+  static createFormTableQuery = `
+    CREATE TABLE IF NOT EXISTS Form (
+      form_id INT AUTO_INCREMENT PRIMARY KEY,
+      owner_id INT,
+      title VARCHAR(255),
+      description VARCHAR(1000),
+      FOREIGN KEY (owner_id) REFERENCES User(user_id)
+    )
+  `;
 
-Form.createFormTable = () => {
-  connection.query(createFormTableQuery, (err) => {
-    if (err) {
+  static async createFormTable() {
+    try {
+      await connection.execute(this.createFormTableQuery);
+      console.log("created table Form");
+    } catch (err) {
       console.log("error: ", err);
-      result(err, null);
-      return;
+      throw err;
     }
-    console.log("created table Form");
-  })
-}
+  }
 
-Form.insert = (newForm, result) => {
-  connection.query("INSERT INTO Form SET ?", newForm, (err, res) => {
-    if (err) {
+  static async insert(newForm) {
+    try {
+      const res = await connection.execute("INSERT INTO Form (owner_id, title, description) VALUES (?, ?, ?)", 
+      [newForm.owner_id, newForm.title, newForm.description]);
+      return { form_id: res[0].insertId, ...newForm };
+    } catch (err) {
       console.log("error: ", err);
-      result(err, null);
-      return;
+      throw err;
     }
-    result(null, {form_id: res.insertId, ...newForm });
-  });
+  }
 }
 
 module.exports = Form;

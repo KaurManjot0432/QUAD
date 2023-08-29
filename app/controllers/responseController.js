@@ -1,67 +1,74 @@
 const Response = require("../models/Response");
 const QuestionResponse = require("../models/QuestionResponse");
+const User = require("../models/User");
+require('dotenv').config();
+const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-exports.saveFormResponse = (req, res) => {
-    Response.createResponseTable();
-    QuestionResponse.createQuestionResponseTable();
-    // Validate request
-    if (!req.body) {
-        return res.status(400).send({
-            message: "Content can not be empty!"
+exports.saveFormResponse = async (req, res) => {
+    try {
+        await Response.createResponseTable();
+        await QuestionResponse.createQuestionResponseTable();
+
+        // Validate request
+        if (!req.body) {
+            return res.status(400).send({
+                message: "Content can not be empty!"
+            });
+        }
+
+        // Create a response
+        const response = new Response({
+            form_id: req.body.form_id,
+            user_id: req.body.user_id,
+        });
+
+        // Check if user has already responded
+        const existingResponse = await Response.find(response.user_id, response.form_id);
+
+        if (existingResponse[0].length > 0) {
+            return res.status(409).send({
+                "error": "User already responded",
+                "message": "The user with the provided information already responded to the form."
+            });
+        }
+
+        // Save response
+        const insertedResponse = await Response.insert(response);
+
+        for (const question of req.body.questions) {
+            const questionId = question.question_id;
+            const answerText = question.answer_text;
+            const questionResponse = new QuestionResponse({
+                response_id: insertedResponse.response_id,
+                question_id: questionId,
+                answer_text: answerText
+            });
+
+            await QuestionResponse.insert(questionResponse);
+        }
+
+        const userData = await User.findUserById(req.body.user_id);
+        const customerEmail = userData[0][0].email;
+        const customerName = userData[0][0].user_name;
+        const customerNumber = userData[0][0].phone_number;
+
+        // Generate the SMS content based on customer details
+        const smsContent = `Hello ${customerName}, thank you for your response. Your email is ${customerEmail}.`;
+
+        // Send the SMS
+        client.messages
+            .create({
+                body: smsContent,
+                from: process.env.SERVICE_PROVIDER_NUMBER,
+                to: customerNumber
+            })
+            .then(message => console.log(message.sid))
+            .catch(error => console.error('Error sending SMS:', error));
+
+        res.send(insertedResponse);
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while processing the request."
         });
     }
-
-    // Create a response
-    const response = new Response({
-        form_id: req.body.form_id,
-        user_id: req.body.user_id,
-    });
-
-    //check if user has already responded
-    Response.find(response.user_id, response.form_id, (err, result) => {
-        if (err) {
-            res.status(500).send({
-                message: err.message || "Some error occurred while checking response existence."
-            });
-        } else {
-            if (result.length > 0) {
-                res.status(409).send({
-                    "error": "User already responded",
-                    "message": "The user with the provided information already responded to the form."
-                });
-            } else {
-                // Save response
-                Response.insert(response, (err, result) => {
-                    if (err)
-                        res.status(500).send({
-                            message:
-                                err.message || "Some error occurred while inserting the Response."
-                        });
-                    else {
-                        req.body.questions.forEach((question) => {
-                            // Access the question_id
-                            console.log("Accessing the question " + question);
-                            const questionId = question.question_id;
-                            const answerText = question.answer_text;
-                            console.log(`Question ID: ${questionId}, Text Answer: ${answerText}`);
-                            const questionResponse = new QuestionResponse({
-                                response_id: result.response_id,
-                                question_id: questionId,
-                                answer_text: answerText
-                            });
-                            QuestionResponse.insert(questionResponse, (err, data) => {
-                                if (err) {
-                                    res.status(500).send({
-                                        message: err.message || "Some error occurred while inserting questionResponse."
-                                    });
-                                }
-                                console.log(`Inserted Question ID: ${questionId}, Text Answer: ${answerText}, question_answer_id: ${data.insertId}`);
-                            })
-                        })
-                        res.send(result);
-                    }
-                })
-            }
-        }
-    })
 }

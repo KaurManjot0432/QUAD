@@ -1,4 +1,4 @@
-const { connection } = require('../models/quadDb');
+const connection = require('../models/quadDb');
 
 const getAllQuestionsForGivenFormIdQuery = `
     SELECT Q.question_text
@@ -19,23 +19,20 @@ const getAllResponsesForGivenFormIdQuery = `
     ORDER BY R.response_id, QR.question_id;
 `;
 
-exports.getAllResponses = (formId, result) => {
-    connection.query(getAllQuestionsForGivenFormIdQuery, formId, (err, res1) => {
-        if (err) {
-            console.log("error: ", err);
-            result(err, null);
-            return;
-        } else {
-            connection.query(getAllResponsesForGivenFormIdQuery, formId, (err, res2) => {
-                if (err) {
-                    console.log("error: ", err);
-                    result(err, null);
-                    return;
-                }
-                const combinedRes = [...res1, ...res2];
-                console.log(combinedRes);
-                result(null, combinedRes);
-            })
-        }
-    })
+exports.getAllResponses = async (formId) => {
+    try {
+        const questions = await executeQuery(getAllQuestionsForGivenFormIdQuery, formId);
+        const responses = await executeQuery(getAllResponsesForGivenFormIdQuery, formId);
+        
+        const combinedRes = [...questions, ...responses];
+        return combinedRes;
+    } catch (err) {
+        console.log("error: ", err);
+        throw err;
+    }
+}
+
+async function executeQuery(query, params) {
+    const res = await connection.execute(query, [params]);
+    return res;
 }

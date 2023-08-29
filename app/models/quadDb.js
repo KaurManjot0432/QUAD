@@ -1,21 +1,17 @@
-const mysql = require("mysql");
+const mysql = require("mysql2/promise");
 const quadDbConfig = require("../config/quadDb.config.js");
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     host: quadDbConfig.HOST,
     user: quadDbConfig.USER,
     password: quadDbConfig.PASSWORD,
     database: quadDbConfig.DB
 });
 
-const connect = () => {
-    connection.connect((err) => {
-        if (err) {
-            console.error('Error connecting to the database:', err);
-            return;
-        }
-        console.log('Connected to the database');
-    });
-}
 
-module.exports = {connect, connection};
+pool.getConnection(function(err) {
+    if (err) throw err;
+    console.log("Connected to university!");
+});
+
+module.exports = pool;
