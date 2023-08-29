@@ -1,7 +1,6 @@
 const User = require("../models/User");
 
-// Create and Save a new User
-exports.create = (req, res) => {
+exports.createUser = (req, res) => {
     User.createUserTable();
     // Validate request 
     if (!req.body) {

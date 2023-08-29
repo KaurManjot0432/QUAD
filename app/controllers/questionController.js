@@ -1,7 +1,7 @@
 const Question = require("../models/Question");
 const FormQuestion = require("../models/FormQuestion");
 
-exports.save = (req, res) => {
+exports.saveFormQuestion = (req, res) => {
   Question.createQuestionTable();
 
   // Validate request
@@ -30,7 +30,6 @@ exports.save = (req, res) => {
       if (result.length > 0) {
         formQuestion.question_id = result[0].question_id;
         // Associate the question with the form
-
         FormQuestion.createFormQuestionTable();
         FormQuestion.insert(formQuestion, (err, result) => {
           if (err) {
@@ -50,7 +49,6 @@ exports.save = (req, res) => {
           } else {
             formQuestion.question_id = result.question_id;
             // Associate the question with the form
-
             FormQuestion.createFormQuestionTable();
             FormQuestion.insert(formQuestion, (err, result) => {
               if (err) {

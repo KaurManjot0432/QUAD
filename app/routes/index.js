@@ -4,22 +4,26 @@ const users = require("../controllers/userController.js");
 const forms = require("../controllers/formController.js");
 const questions = require("../controllers/questionController.js");
 const responses = require("../controllers/responseController.js");
-const QuestionResponse = require('../models/QuestionResponse.js');
+const query = require("../controllers/queryController.js");
 
-router.post('/createUser', (req, res) => {
-    users.create(req, res);
+router.post('/api/createUser', (req, res) => {
+    users.createUser(req, res);
 })
 
-router.post('/createForm', (req, res) => {
-    forms.create(req, res);
+router.post('/api/createForm', (req, res) => {
+    forms.createForm(req, res);
 })
 
-router.post('/saveQuestion', (req, res) => {
-    questions.save(req, res);
+router.post('/api/saveFormQuestion', (req, res) => {
+    questions.saveFormQuestion(req, res);
 })
 
-router.post('/saveResponse', (req, res) => {
-    responses.save(req, res);
+router.post('/api/saveFormResponse', (req, res) => {
+    responses.saveFormResponse(req, res);
 })
+
+router.get('/api/formResponses', (req, res) => {
+    query.getFormResponses(req, res);
+})
+
 module.exports = router;
-
