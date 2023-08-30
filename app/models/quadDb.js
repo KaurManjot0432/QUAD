@@ -11,7 +11,7 @@ const pool = mysql.createPool({
 
 pool.getConnection(function(err) {
     if (err) throw err;
-    console.log("Connected to university!");
+    console.log("Connected to quadDB!");
 });
 
 module.exports = pool;

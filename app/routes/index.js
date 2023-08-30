@@ -5,8 +5,9 @@ const forms = require("../controllers/formController.js");
 const questions = require("../controllers/questionController.js");
 const responses = require("../controllers/responseController.js");
 const query = require("../controllers/queryController.js");
+const validator = require("../config/userValidator.js");
 
-router.post('/api/createUser', (req, res) => {
+router.post('/api/createUser', validator.validateUser, (req, res) => {
     users.createUser(req, res);
 })
 

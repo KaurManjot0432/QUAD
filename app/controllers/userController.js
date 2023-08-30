@@ -1,14 +1,14 @@
 const User = require("../models/User");
+const { validationResult } = require('express-validator');
 
 exports.createUser = async (req, res) => {
     try {
         await User.createUserTable();
 
-        // Validate request 
-        if (!req.body) {
-            return res.status(400).send({
-                message: "Content can not be empty!"
-            });
+        //validate Request
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
         }
 
         // Create a user

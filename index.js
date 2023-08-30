@@ -7,5 +7,5 @@ const port = 3001;
 app.use('/',router);
 
 app.listen(port, () => {
-  console.log(`myApp listening at http://localhost:${port}`)
+  console.log(`QUAD listening at http://localhost:${port}`)
 })

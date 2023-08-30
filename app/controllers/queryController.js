@@ -4,7 +4,6 @@ const fs = require("fs").promises;
 exports.getFormResponses = async (req, res) => {
     try {
         const resultData = await query.getAllResponses(req.query.form_id);
-        console.log("jlkjskdsiw");
         console.log(resultData);
         // Transform the data into the desired format
         const transformedData = {};
