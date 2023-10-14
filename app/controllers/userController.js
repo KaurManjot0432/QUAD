@@ -8,11 +8,11 @@ const JWT_SECRET = 'manjot@kaur';
 exports.createUser = async (req, res) => {
     try {
         await User.createUserTable();
-
+        let success = false;
         //validate Request
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({success, errors: errors.array() });
         }
 
         // Hash password && Create a user
@@ -29,6 +29,7 @@ exports.createUser = async (req, res) => {
         const existingUser = await User.findUserByEmail(user.email);
         if (existingUser[0].length > 0) {
             return res.status(409).send({
+                success,
                 error: "User already exists",
                 message: "The user with the provided information already exists."
             });
@@ -41,11 +42,12 @@ exports.createUser = async (req, res) => {
               id: result.user_id
             }
         }
+        success = true;
         const auth_token = jwt.sign(data, JWT_SECRET,  { expiresIn: '1800s' });
 
-        res.json({ auth_token })
+        res.json({success, auth_token })
     } catch (err) {
-        res.status(500).send({
+        res.status(500).send({success,
             message: err.message || "Some error occurred while processing the request."
         });
     }
@@ -55,13 +57,15 @@ exports.signin = async (req, res) => {
     try{
         //validate Request
         const errors = validationResult(req);
+        let success = false;
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({success, errors: errors.array() });
         }
 
         const existingUser = await User.findUserByEmail(req.body.email);
         if (existingUser[0].length == 0) {
             return res.status(400).send({
+                success,
                 error: "Enter valid credentials!"
             });
         }
@@ -69,7 +73,7 @@ exports.signin = async (req, res) => {
         const checkPassword = await bcrypt.compare(req.body.password, savedUser.password);
 
         if (!checkPassword) {
-            return res.status(400).json({ error: "Enter valid credentials!" });
+            return res.status(400).json({success, error: "Enter valid credentials!" });
         }
 
         const data = {
@@ -77,12 +81,14 @@ exports.signin = async (req, res) => {
                 id: savedUser.user_id
             }
         }
+        success = true;
         const authtoken = jwt.sign(data, JWT_SECRET);
 
-        res.json({ authtoken })
+        res.json({success, authtoken })
 
     } catch (err) {
         res.status(500).send({
+            success,
             message: err.message || "Some error occurred while processing the request."  
         });
     }
