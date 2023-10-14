@@ -6,10 +6,17 @@ const questions = require("../controllers/questionController.js");
 const responses = require("../controllers/responseController.js");
 const query = require("../controllers/queryController.js");
 const validator = require("../config/userValidator.js");
+var fetchUser = require("../config/fetchUser");
 
 router.post('/api/createUser', validator.validateUser, (req, res) => {
     users.createUser(req, res);
 })
+
+router.post('/api/signin', validator.signin, (req, res) => {
+    users.signin(req, res);
+})
+
+router.get('/api/profile', fetchUser, users.getProfile);
 
 router.post('/api/createForm', (req, res) => {
     forms.createForm(req, res);

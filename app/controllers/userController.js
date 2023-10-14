@@ -12,10 +12,10 @@ exports.createUser = async (req, res) => {
         //validate Request
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors.array() });
         }
 
-        // Create a user
+        // Hash password && Create a user
         const salt = await bcrypt.genSalt(10);
         const securedPassword = await bcrypt.hash(req.body.password, salt);
         const user = new User({
@@ -41,12 +41,64 @@ exports.createUser = async (req, res) => {
               id: user.id
             }
         }
-        const authtoken = jwt.sign(data, JWT_SECRET);
+        const auth_token = jwt.sign(data, JWT_SECRET,  { expiresIn: '1800s' });
 
-        res.json({authtoken})
+        res.json({ auth_token })
     } catch (err) {
         res.status(500).send({
             message: err.message || "Some error occurred while processing the request."
         });
     }
 };
+
+exports.signin = async (req, res) => {
+    try{
+        //validate Request
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const existingUser = await User.findUserByEmail(req.body.email);
+        if (existingUser[0].length == 0) {
+            return res.status(400).send({
+                error: "Enter valid credentials!"
+            });
+        }
+        const savedUser = existingUser[0][0];
+        const checkPassword = await bcrypt.compare(req.body.password, savedUser.password);
+
+        if (!checkPassword) {
+            return res.status(400).json({ error: "Enter valid credentials!" });
+        }
+
+        const data = {
+            user: {
+                id: savedUser.id
+            }
+        }
+        const authtoken = jwt.sign(data, JWT_SECRET);
+
+        res.json({ authtoken })
+
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while processing the request."  
+        });
+    }
+};
+
+exports.getProfile = async (req,res)=>{
+    try{
+        const userId = req.user.id;
+        // const User = await user.findById(userId).select("-password");
+        // if(!User){ 
+        //     return res.status(401).json({error : "Access Denied!"});
+        // }
+        res.send(userId);
+    } catch(err){
+        console.error(err);
+        return res.status(500).send("some error occured");
+    }
+
+}

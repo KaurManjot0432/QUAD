@@ -39,7 +39,7 @@ class User {
 
   static async findUserByEmail(userEmail) {
     try {
-      const res = await connection.query("SELECT user_id FROM User WHERE email = ?", [userEmail]);
+      const res = await connection.query("SELECT * FROM User WHERE email = ?", [userEmail]);
       return res;
     } catch (err) {
       console.log("error: ", err);
