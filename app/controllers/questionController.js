@@ -43,3 +43,15 @@ exports.saveFormQuestion = async (req, res) => {
     });
   }
 };
+
+exports.findFormQuestions = async (req, res) => {
+  try{
+    const response = await Question.findQuestionsByFormId(req.query.form_id);
+    console.log(response);
+    res.send(response[0]);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occurred while processing the request."
+    });
+  }
+}

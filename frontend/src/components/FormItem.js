@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 const FormItem = (props) => {
     const {form, addQues} = props;
@@ -8,6 +9,7 @@ const FormItem = (props) => {
                 <div class="card-body">
                     <h5 class="card-title">{form.title}</h5>
                     <p class="card-text">{form.description}</p>
+                    <Link to={`/form/${form.form_id}`}>Open Form</Link>
                     <i className="fas fa-edit mx-2" onClick={()=>{addQues(form)}}></i>
                     <i className="fas fa-trash-alt mx-2"></i>
                 </div>

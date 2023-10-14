@@ -45,6 +45,19 @@ class Question {
       throw err;
     }
   }
+
+  static async findQuestionsByFormId(formId) {
+    try{
+      const res = await connection.execute(
+        "SELECT DISTINCT Question.question_id, Question.question_type, Question.question_text FROM Question INNER JOIN FormQuestion ON Question.question_id = FormQuestion.question_id WHERE FormQuestion.form_id = ?;",
+        [formId]
+      )
+      return res;
+    } catch (err) {
+      console.log("error: ", err);
+      throw err;
+    }
+  }
 }
 
 module.exports = Question;

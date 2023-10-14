@@ -19,7 +19,7 @@ exports.saveFormResponse = async (req, res) => {
         // Create a response
         const response = new Response({
             form_id: req.body.form_id,
-            user_id: req.body.user_id,
+            user_id: req.user.id,
         });
 
         // Check if user has already responded
@@ -47,7 +47,7 @@ exports.saveFormResponse = async (req, res) => {
             await QuestionResponse.insert(questionResponse);
         }
 
-        const userData = await User.findUserById(req.body.user_id);
+        const userData = await User.findUserById(req.user.id);
         const customerEmail = userData[0][0].email;
         const customerName = userData[0][0].user_name;
         const customerNumber = userData[0][0].phone_number;

@@ -26,11 +26,15 @@ router.get('/api/forms', fetchUser, (req, res) => {
     forms.getForms(req, res);
 })
 
+router.get('/api/formQuestions', (req, res) => {
+    questions.findFormQuestions(req, res);
+})
+
 router.post('/api/saveFormQuestion', (req, res) => {
     questions.saveFormQuestion(req, res);
 })
 
-router.post('/api/saveFormResponse', (req, res) => {
+router.post('/api/saveFormResponse', fetchUser, (req, res) => {
     responses.saveFormResponse(req, res);
 })
 

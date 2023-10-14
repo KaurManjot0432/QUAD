@@ -5,10 +5,10 @@ import { About }from './components/About';
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import FormState from './context/forms/FormState';
+import FormQuestions from './components/FormQuestions';
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path='/about' element={<About/>}/>
+                <Route path="/form/:formId" element={<FormQuestions/>} />
               </Routes>
             </div>
         </Router>
