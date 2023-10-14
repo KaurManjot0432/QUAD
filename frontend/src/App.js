@@ -8,17 +8,20 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import FormState from './context/forms/FormState';
 
 function App() {
   return (
     <>
-    <Router>
-   <Navbar/>
-     <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path='/about' element={<About/>}/>
-        </Routes>
+      <FormState>
+        <Router>
+          <Navbar/>
+            <Routes>
+              <Route path="/" element={<Home/>}/>
+              <Route path='/about' element={<About/>}/>
+            </Routes>
         </Router>
+      </FormState>
     </>
   );
 }
