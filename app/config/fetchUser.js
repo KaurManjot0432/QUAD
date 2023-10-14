@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-const JWT_SECRET = 'ManjotisWorkInG$onQuaDProJecT';
+const JWT_SECRET = 'manjot@kaur';
 
 
 const fetchUser = (req,res,next)=>{
@@ -9,6 +9,7 @@ const fetchUser = (req,res,next)=>{
     }
     try {
         const data = jwt.verify(token, JWT_SECRET);
+        console.log(data);
         req.user = data.user;
         next();
     } catch (error) {

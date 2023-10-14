@@ -18,11 +18,11 @@ router.post('/api/signin', validator.signin, (req, res) => {
 
 router.get('/api/profile', fetchUser, users.getProfile);
 
-router.post('/api/createForm', (req, res) => {
+router.post('/api/createForm', fetchUser, (req, res) => {
     forms.createForm(req, res);
 })
 
-router.get('/api/forms', (req, res) => {
+router.get('/api/forms', fetchUser, (req, res) => {
     forms.getForms(req, res);
 })
 

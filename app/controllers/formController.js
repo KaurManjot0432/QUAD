@@ -15,7 +15,7 @@ exports.createForm = async (req, res) => {
         const form = new Form({
             title: req.body.title,
             description: req.body.description,
-            owner_id: req.body.owner_id,
+            owner_id: req.user.id,
         });
 
         // Save form in the database
@@ -31,7 +31,8 @@ exports.createForm = async (req, res) => {
 
 exports.getForms = async (req, res) => {
     try{
-        const formsbyId = await Form.findFormsById(req.query.owner_id);
+        const formsbyId = await Form.findFormsById(req.user.id);
+        console.log(formsbyId[0]);
         res.send(formsbyId[0]);
     } catch (err) {
         res.status(500).send({
