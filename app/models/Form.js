@@ -37,6 +37,16 @@ class Form {
       throw err;
     }
   }
+
+  static async findFormsById(ownerId) {
+    try {
+      const res = await connection.query("SELECT * FROM Form WHERE owner_id = ?", [ownerId]);
+      return res;
+    } catch (err) {
+      console.log("error: ", err);
+      throw err;
+    }
+  }
 }
 
 module.exports = Form;

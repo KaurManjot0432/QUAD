@@ -22,6 +22,10 @@ router.post('/api/createForm', (req, res) => {
     forms.createForm(req, res);
 })
 
+router.get('/api/forms', (req, res) => {
+    forms.getForms(req, res);
+})
+
 router.post('/api/saveFormQuestion', (req, res) => {
     questions.saveFormQuestion(req, res);
 })

@@ -28,3 +28,14 @@ exports.createForm = async (req, res) => {
         });
     }
 };
+
+exports.getForms = async (req, res) => {
+    try{
+        const formsbyId = await Form.findFormsById(req.query.owner_id);
+        res.send(formsbyId[0]);
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while processing the request."
+        });
+    }
+}
