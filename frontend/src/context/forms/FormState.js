@@ -13,7 +13,7 @@ const FormState = (props) => {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyN30sImlhdCI6MTY5NzI3NzcwOX0.KflOa1giPnVlcjrqPXFMDnT56316Q6wSk_2Uhika7RY'
+        'auth-token' : localStorage.getItem('token')
       }
     });
     const res = await response.json();
@@ -26,7 +26,7 @@ const FormState = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyN30sImlhdCI6MTY5NzI3NzcwOX0.KflOa1giPnVlcjrqPXFMDnT56316Q6wSk_2Uhika7RY'
+        'auth-token' : localStorage.getItem('token')
       },
       body: JSON.stringify({ title, description })
     });
@@ -39,7 +39,7 @@ const FormState = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyN30sImlhdCI6MTY5NzI3NzcwOX0.KflOa1giPnVlcjrqPXFMDnT56316Q6wSk_2Uhika7RY'
+        'auth-token' : localStorage.getItem('token')
       },
       body: JSON.stringify({ form_id, question_type, question_text })
     });
@@ -69,7 +69,7 @@ const FormState = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyN30sImlhdCI6MTY5NzI3NzcwOX0.KflOa1giPnVlcjrqPXFMDnT56316Q6wSk_2Uhika7RY'
+        'auth-token' : localStorage.getItem('token')
       },
       body: JSON.stringify({ form_id, questions })
     });

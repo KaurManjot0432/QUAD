@@ -33,7 +33,7 @@ const Login = () => {
     }
     return (
         <>
-            <h1 className="head">Log in to myNotebook</h1>
+            <h1 className="head">Log in to QUAD</h1>
 
             <form onSubmit={handleClick}>
                 <div className="form-group">

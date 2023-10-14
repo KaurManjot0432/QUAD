@@ -1,12 +1,18 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import FormContext from '../context/forms/FormContext';
 import FormItem from './FormItem';
+import { useNavigate } from 'react-router-dom';
 
 const Forms = () => {
+    let navigate = useNavigate();
     const context = useContext(FormContext);
     const {forms, getForms, addQuestion} = context;
     useEffect(() => {
-        getForms()
+        if(localStorage.getItem('token')){
+            getForms();
+        } else {
+            navigate('/login');
+        }
     }, []);
 
     const ref = useRef(null)
