@@ -68,10 +68,14 @@ QUAD provides a set of APIs to manage and interact with the system:
 
 Here are some screenshots showcasing the QUAD platform:
 
-- **Screenshot 1**: ![Alt text](/screenshots/ss1.png?raw=true "Optional Title")
-- **Screenshot 2**: ![Alt text](/screenshots/ss2.png?raw=true "Optional Title")
-- **Screenshot 3**: ![Alt text](/screenshots/ss3.png?raw=true "Optional Title")
-- **Screenshot 4**: ![Alt text](/screenshots/ss4.png?raw=true "Optional Title")
+- **Screenshot 1**: 
+![Alt text](/frontend/screenshots/ss1.png?raw=true "Optional Title")
+- **Screenshot 2**: 
+![Alt text](/frontend/screenshots/ss2.png?raw=true "Optional Title")
+- **Screenshot 3**: 
+![Alt text](/frontend/screenshots/ss3.png?raw=true "Optional Title")
+- **Screenshot 4**: 
+![Alt text](/frontend/screenshots/ss4.png?raw=true "Optional Title")
 
 ## Getting Started
 
