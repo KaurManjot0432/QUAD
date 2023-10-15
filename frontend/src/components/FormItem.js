@@ -9,7 +9,8 @@ const FormItem = (props) => {
                 <div class="card-body">
                     <h5 class="card-title">{form.title}</h5>
                     <p class="card-text">{form.description}</p>
-                    <Link to={`/form/${form.form_id}`}>Open Form</Link>
+                    <p class="card-text"><Link to={`/form/${form.form_id}`}>Open Form</Link></p>
+                    <p class="card-text"><Link to={`http://localhost:3001/api/formResponses?form_id=${form.form_id}`}>Download Responses</Link></p>
                     <i className="fas fa-edit mx-2" onClick={()=>{addQues(form)}}></i>
                     <i className="fas fa-trash-alt mx-2"></i>
                 </div>
