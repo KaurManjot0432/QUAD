@@ -74,12 +74,9 @@ const Forms = () => {
 
             <div className="row my-3">
                 <h2>Your Forms</h2>
-                <div className="container mx-2"> 
-                {forms.length===0 && 'No forms to display'}
-                </div>
-                {forms.map((form) => {
+                {forms?forms.map((form) => {
                     return <FormItem form={form} addQues={addQues} />
-                })}
+                }) :  <p>No forms to display.</p>} 
             </div>
         </div>
     )

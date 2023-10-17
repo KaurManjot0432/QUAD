@@ -7,7 +7,7 @@ function FormQuestions() {
     const context = useContext(FormContext);
     const {findFormQuestions, formQuestions, saveFormRespone} = context;
     const {formId} = useParams();
-    const [answers, setAnswers] = useState({});
+    const [answers, setAnswers] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,6 +28,7 @@ function FormQuestions() {
     return (
         <div>
             <h2>Form Questions</h2>
+            {formQuestions.length===0 && 'No questions to display'}
             <form>
                 {formQuestions.map(question => (
                     <div key={question.question_id}>
@@ -41,7 +42,7 @@ function FormQuestions() {
                     </div>
                   
                 ))}
-                <button type="button" onClick={handleSubmit}>Submit</button>
+                {formQuestions.length > 0 && (<button type="button" onClick={handleSubmit}>Submit</button>)}
             </form>
         </div>
     );
