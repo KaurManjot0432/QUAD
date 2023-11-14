@@ -1,4 +1,4 @@
-const connection = require('../models/quadDb');
+const connection = require('../database/quadDb');
 
 class Question {
   constructor(question) {
@@ -10,7 +10,7 @@ class Question {
     CREATE TABLE IF NOT EXISTS Question (
       question_id INT AUTO_INCREMENT PRIMARY KEY,
       question_type VARCHAR(255),
-      question_text TEXT UNIQUE
+      question_text TEXT
     )
   `;
 

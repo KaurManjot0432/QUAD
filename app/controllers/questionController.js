@@ -1,7 +1,9 @@
 const Question = require("../models/Question");
 const FormQuestion = require("../models/FormQuestion");
+const formQuery = require("../models/Form");
 
 exports.saveFormQuestion = async (req, res) => {
+  var success = false;
   try {
     await Question.createQuestionTable();
     await FormQuestion.createFormQuestionTable();
@@ -9,10 +11,17 @@ exports.saveFormQuestion = async (req, res) => {
     // Validate request
     if (!req.body) {
       return res.status(400).send({
-        message: "Content can not be empty!"
+        success,
+        error: "Content can not be empty!"
       });
     }
-
+    const formOwner = await formQuery.findFormOwner(req.body.form_id);
+    if (!formOwner | formOwner[0][0].owner_id !== req.user.user_id) {
+        return res.status(400).send({
+            success: false,
+            error: "User not authorised to perform this action."
+        });
+    }
     // Create a question
     const question = new Question({
       question_type: req.body.question_type,
@@ -35,23 +44,28 @@ exports.saveFormQuestion = async (req, res) => {
 
     // Associate the question with the form
     const insertedFormQuestion = await FormQuestion.insert(formQuestion);
-
-    res.send(insertedFormQuestion);
+    success = true;
+    res.send({success, result: insertedFormQuestion});
   } catch (err) {
     res.status(500).send({
-      message: err.message || "Some error occurred while processing the request."
+      success,
+      error: err.message || "Some error occurred while processing the request."
     });
   }
 };
 
 exports.findFormQuestions = async (req, res) => {
   try{
-    const response = await Question.findQuestionsByFormId(req.query.form_id);
+
+    const {formId} = req.params;
+    console.log(formId);
+    const response = await Question.findQuestionsByFormId(formId);
     console.log(response);
-    res.send(response[0]);
+    res.send({success: true, result: response[0]});
   } catch (err) {
     res.status(500).send({
-      message: err.message || "Some error occurred while processing the request."
+      success: false,
+      error: err.message || "Some error occurred while processing the request."
     });
   }
 }

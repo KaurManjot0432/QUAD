@@ -1,4 +1,4 @@
-const connection = require('../models/quadDb');
+const connection = require('../database/quadDb');
 
 const getAllQuestionsForGivenFormIdQuery = `
     SELECT Q.question_text

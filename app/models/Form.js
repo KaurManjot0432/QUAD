@@ -1,4 +1,4 @@
-const connection = require('../models/quadDb');
+const connection = require('../database/quadDb');
 
 class Form {
   constructor(form) {
@@ -41,6 +41,15 @@ class Form {
   static async findFormsById(ownerId) {
     try {
       const res = await connection.query("SELECT * FROM Form WHERE owner_id = ?", [ownerId]);
+      return res;
+    } catch (err) {
+      console.log("error: ", err);
+      throw err;
+    }
+  }
+  static async findFormOwner(formId) {
+    try {
+      const res = await connection.query("SELECT owner_id FROM Form WHERE form_id = ?", [formId]);
       return res;
     } catch (err) {
       console.log("error: ", err);
