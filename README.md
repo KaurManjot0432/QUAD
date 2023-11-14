@@ -1,12 +1,12 @@
-# Project: QUAD - Query, Upload, Archive, Deliver
+# Project: QUAD 
 
 ## Overview
 
-QUAD, short for "Query," "Upload," "Archive," and "Deliver," is a powerful Data Collection Platform with a global presence.
+QUAD is a powerful Data Collection Platform.
 
 ## Problem Statement
 
-The primary goal of QUAD is to provide a flexible and robust data storage for a diverse collection platform. This involves managing forms, questions, responses, and answers, along with their associated metadata. Seamless integration with Google Sheets and efficient retrieval with a versatile storage layout are the cornerstones of this project.
+The primary goal of QUAD is to provide a flexible and robust data storage for a diverse collection platform. This involves managing users, forms, questions, responses, and answers, along with their associated metadata. Seamless integration with Google Sheets and efficient retrieval with a versatile storage layout are the cornerstones of this project.
 
 ## Functional Requirements
 
@@ -49,33 +49,28 @@ QUAD's data storage is structured around several key relationships:
 
 QUAD provides a set of APIs to manage and interact with the system:
 
-- **createUser API**: Create a new user account in the QUAD system.
-- **createForm API**: Allows users to create a new form to collect information.
-- **saveFormQuestion API**: Add a new question to a specific form.
-- **saveFormResponse API**: Submit responses to a specific form, with an optional SMS confirmation.
-- **formResponses API**: Export all responses to a CSV sheet.
-- **formQuestions API**: Retrieve a form with all its questions.
-- **sign API**: Login to the system.
-- **forms API**: Retrieve all forms associated with a user.
-- **profile API**: Retrieve user profile information.
+- **/users/signup**: Create a new user account in the QUAD system.
+- **/users/signin/**: login to user account.
+- **/forms/createForm**: create a form to collect information.
+- **/forms/createQuestion**: Add a new question to a specific form.
+- **forms/questions/:formId**: Retrieve a form with all its questions.
+- **/forms**: Retrieve all forms associated with a user.
+- **/forms/response/:formId**: submit a response to form, with an optional SMS confirmation.
+- **/forms/responses/:formId**: Download all responses in Google Sheet 
 
 ## Technology Stack
 
-- **Backend**: The backend is implemented using MySQL database for data storage, Node.js for server-side scripting, and Express.js for handling API requests.
-- **Frontend**: The frontend is developed using React, providing a dynamic and user-friendly interface.
-
-## Screenshots
-
-Here are some screenshots showcasing the QUAD platform:
-
-- **Screenshot 1**: 
-![Alt text](/frontend/screenshots/ss1.png?raw=true "Optional Title")
-- **Screenshot 2**: 
-![Alt text](/frontend/screenshots/ss2.png?raw=true "Optional Title")
-- **Screenshot 3**: 
-![Alt text](/frontend/screenshots/ss3.png?raw=true "Optional Title")
-- **Screenshot 4**: 
-![Alt text](/frontend/screenshots/ss4.png?raw=true "Optional Title")
+- **Javascript**
+- **Nodejs**
+- **MySQL**
+- **Express**
+- **express-validator**
+- **googleapis**
+- **jsonwebtoken**
+- **twilio**
+- **cors**
+- **dotenv**
+- **bcryptjs**
 
 ## Getting Started
 
@@ -93,25 +88,18 @@ git clone https://github.com/KaurManjot0432/QUAD.git
 npm install
 ```
 
-3. Install the node modules inside frontend folder
+3. Setup .env file in the root directory and configure env variables used.
 
-```bash
-npm install
-```
-4. Run the backend server inside quad folder using the command line simply using,
+5. Setup credentials.json file in the root directory for google api setup.
 
-```bash
-node index.js
-```
-
-5. Run the frontend server inside frontend folder using the command line simply using,
+6. Run the backend server inside quad folder using the command line simply using,
 
 ```bash
 npm start
 ```
 
-Run the application on http://localhost:3000/
 
+Run the application on http://localhost:5000/
 
 
 We welcome your feedback and contributions to make QUAD even more powerful and versatile.

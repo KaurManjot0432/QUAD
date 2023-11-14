@@ -55,7 +55,7 @@ exports.saveFormResponse = async (req, res) => {
         const customerNumber = req.user.phone_number;
 
         // Generate the SMS content based on customer details
-        const smsContent = `Hello ${customerName}, thank you for your response. Your email is ${customerEmail}.`;
+        const smsContent = `Hello ${customerName}, thank you for your response. Your email is ${customerEmail} and phonenumber is ${customerNumber}.`;
 
         // Send the SMS
         client.messages
